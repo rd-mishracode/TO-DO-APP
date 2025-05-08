@@ -17,7 +17,7 @@ function AddTodo() {
           
         }
         else{
-        dispatch(addTodo({ text: input, date, time }));
+        dispatch(addTodo({ text: input.trim(), date, time }));
 
         setInput('')
       }
@@ -26,11 +26,11 @@ function AddTodo() {
   return (
     <form onSubmit={addTodoHandler} className="space-x-3 mt-12 flex flex-wrap justify-around
      border-2-white bg-amber-100 rounded-lg">
-      <input type="date" name="date" id="date" onChange={(e)=>{setDate(e.target.value)}} />
-      <input type="time" name="time" id="time" onChange={(e)=>{setTime(e.target.value)}} />
+      <input type="date" name="date" id="date" placeholder='enter date'  className='border-2 bg-blue-300 border-blue-200 rounded-md' onChange={(e)=>{setDate(e.target.value)}} />
+      <input type="time" name="time" id="time" className='border-2 bg-blue-300 border-blue-200 rounded-md' placeholder='enter time' onChange={(e)=>{setTime(e.target.value)}} />
       <input
         type="text"
-        className="bg-gray-800 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        className="bg-gray-800 rounded-2xl w-4xl border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
         placeholder="Enter a Todo..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
