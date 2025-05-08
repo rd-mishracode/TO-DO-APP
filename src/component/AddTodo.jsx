@@ -12,13 +12,20 @@ function AddTodo() {
 
     const addTodoHandler = (e) => {
         e.preventDefault()
+        if(input==''){
+          alert('enter a task');
+          
+        }
+        else{
         dispatch(addTodo({ text: input, date, time }));
 
         setInput('')
+      }
     }
 
   return (
-    <form onSubmit={addTodoHandler} className="space-x-3 mt-12 flex flex-wrap justify-around border-2-white bg-amber-100 rounded inset-0.5">
+    <form onSubmit={addTodoHandler} className="space-x-3 mt-12 flex flex-wrap justify-around
+     border-2-white bg-amber-100 rounded-lg">
       <input type="date" name="date" id="date" onChange={(e)=>{setDate(e.target.value)}} />
       <input type="time" name="time" id="time" onChange={(e)=>{setTime(e.target.value)}} />
       <input
