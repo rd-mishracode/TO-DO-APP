@@ -19,12 +19,14 @@ function Todos() {
             <li
               key={todo.id}
               className="flex justify-between items-center bg-green-700 hover:bg-red-800
-                transition-colors px-4 py-3 rounded-lg shadow-sm"
+                transition-colors px-4 py-3 rounded-lg shadow-sm gap-1"
             >
               <div className=" flex justify-between w-1.5 gap-1.5 bg-amber-600">
-              <span className="text-sm text-gray-300">{todo.Date}</span>
-              <span className="text-sm text-gray-300"> {todo.Time}</span>
-                <span className="text-white text-lg">{todo.text}</span>
+                <div >
+              <span className="flex gap-2 text-sm text-gray-300 whitespace-nowrap">{todo.date}</span>
+              <span className="text-sm text-gray-300 w-1"> {todo.time}</span>
+              </div>
+                <span className="text-white text-lg w-3xl">{todo.text}</span>
                 
               </div>
               <button
