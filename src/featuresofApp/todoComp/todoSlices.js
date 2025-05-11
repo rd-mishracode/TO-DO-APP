@@ -1,42 +1,38 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit';
+import { saveTodosToDB, getTodosFromDB } from '../../../utils/db';
 
-// Load from localStorage on startup
-const loadFromLocalStorage = () => {
-  try {
-    const todos = localStorage.getItem('todos');
-    return todos ? JSON.parse(todos) : [];
-  } catch (e) {
-    console.error('Failed to load from localStorage:', e);
-    return [];
-  }
-}
+export const loadTodosFromDB = createAsyncThunk('todo/loadTodosFromDB', async () => {
+  const todos = await getTodosFromDB();
+  return todos;
+});
 
-const initialState = {
-  todos: [{ id: 1, Date: '00/00/0000', Time: '00:00', text: 'Hello world' }],
-};
-
-export const todoSlice = createSlice({
+const todoSlice = createSlice({
   name: 'todo',
-  initialState,
+  initialState: {
+    todos: [],
+  },
   reducers: {
     addTodo: (state, action) => {
-      const { text, date, time } = action.payload;
-      const todo = {
+      const newTodo = {
         id: nanoid(),
-        text,
-        Date: date,
-        Time: time,
+        text: action.payload.text,
+        date: action.payload.date,
+        time: action.payload.time,
       };
-      state.todos.push(todo);
-      localStorage.setItem('todos', JSON.stringify(state.todos));
+      state.todos.push(newTodo);
+      saveTodosToDB(state.todos); // Save to IndexedDB
     },
     removeTodo: (state, action) => {
-      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-       localStorage.setItem('todos', JSON.stringify(state.todos));
+      state.todos = state.todos.filter(todo => todo.id !== action.payload);
+      saveTodosToDB(state.todos); // Update IndexedDB
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loadTodosFromDB.fulfilled, (state, action) => {
+      state.todos = action.payload || [];
+    });
   },
 });
 
 export const { addTodo, removeTodo } = todoSlice.actions;
-
 export default todoSlice.reducer;
